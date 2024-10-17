@@ -232,6 +232,7 @@ func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook)
 			SwitchName:                     b.config.SwitchName,
 			SwitchesNames:                  b.config.SwitchesNames,
 			MacAddresses:                   b.config.MacAddresses,
+			VlanIds:                        b.config.VlanIds,
 			RamSize:                        b.config.RamSize,
 			DiskSize:                       b.config.DiskSize,
 			DiskBlockSize:                  b.config.DiskBlockSize,

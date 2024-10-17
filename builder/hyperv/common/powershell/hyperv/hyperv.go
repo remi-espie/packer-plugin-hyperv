@@ -29,6 +29,7 @@ type scriptOptions struct {
 	SwitchName         string
 	SwitchesNames      []string
 	MacAddresses       []string
+	VlanIds            []string
 	Generation         uint
 	DiffDisks          bool
 	FixedVHD           bool
@@ -361,7 +362,10 @@ Hyper-V\New-VM -Name "{{ .VMName }}" -Path "{{ .Path }}" -MemoryStartupBytes {{ 
 {{- if eq .Generation 2}} -Generation {{ .Generation }} {{- end -}}
 {{- if ne .Version ""}} -Version {{ .Version }} {{- end -}}
 {{ range $i, $switchName := .SwitchesNames }}
-Hyper-V\Add-VMNetworkAdapter -VMName "{{ $.VMName }}" -SwitchName "{{ $switchName }}"{{ if gt (len $.MacAddresses) $i }} -StaticMacAddress "{{ index $.MacAddresses $i }}".Replace("-","") {{ end }} 
+Hyper-V\Add-VMNetworkAdapter -VMName "{{ $.VMName }}" -SwitchName "{{ $switchName }}"{{ if gt (len $.MacAddresses) $i }} -StaticMacAddress "{{ index $.MacAddresses $i }}".Replace("-","") {{ end }}
+{{ if gt (len $.VlanIds) $i }} 
+$adapter = Get-VMNetworkAdapter -VMName "{{ $.VMName }}" | Where-Object { $_.SwitchName -eq "{{ $switchName }}" }
+Hyper-V\Set-VMNetworkAdapterVlan -VMNetworkAdapter $adapter -Access -VlanId  "{{ index $.VlanIds $i }}" {{ end }}
 {{- end -}}
 `))
 
@@ -401,7 +405,7 @@ func CheckVMName(vmName string) error {
 }
 
 func CreateVirtualMachine(vmName string, path string, harddrivePath string, ram int64,
-	diskSize int64, diskBlockSize int64, switchName string, switchesNames []string, macAddresses []string, generation uint,
+	diskSize int64, diskBlockSize int64, switchName string, switchesNames []string, macAddresses []string, vlanIds []string, generation uint,
 	diffDisks bool, fixedVHD bool, version string) error {
 	opts := scriptOptions{
 		Version:            version,
@@ -414,6 +418,7 @@ func CreateVirtualMachine(vmName string, path string, harddrivePath string, ram 
 		SwitchName:         switchName,
 		SwitchesNames:      switchesNames,
 		MacAddresses:       macAddresses,
+		VlanIds:            vlanIds,
 		Generation:         generation,
 		DiffDisks:          diffDisks,
 		FixedVHD:           fixedVHD,

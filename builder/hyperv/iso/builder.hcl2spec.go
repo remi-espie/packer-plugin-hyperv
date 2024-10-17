@@ -102,6 +102,7 @@ type FlatConfig struct {
 	MacAddress                     *string           `mapstructure:"mac_address" required:"false" cty:"mac_address" hcl:"mac_address"`
 	MacAddresses                   []string          `mapstructure:"mac_addresses" required:"false" cty:"mac_addresses" hcl:"mac_addresses"`
 	VlanId                         *string           `mapstructure:"vlan_id" required:"false" cty:"vlan_id" hcl:"vlan_id"`
+	VlanIds                        []string          `mapstructure:"vlan_ids" required:"false" cty:"vlan_ids" hcl:"vlan_ids"`
 	Cpu                            *uint             `mapstructure:"cpus" required:"false" cty:"cpus" hcl:"cpus"`
 	Generation                     *uint             `mapstructure:"generation" required:"false" cty:"generation" hcl:"generation"`
 	EnableMacSpoofing              *bool             `mapstructure:"enable_mac_spoofing" required:"false" cty:"enable_mac_spoofing" hcl:"enable_mac_spoofing"`
@@ -231,6 +232,7 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"mac_address":                      &hcldec.AttrSpec{Name: "mac_address", Type: cty.String, Required: false},
 		"mac_addresses":                    &hcldec.AttrSpec{Name: "mac_addresses", Type: cty.List(cty.String), Required: false},
 		"vlan_id":                          &hcldec.AttrSpec{Name: "vlan_id", Type: cty.String, Required: false},
+		"vlan_ids":                         &hcldec.AttrSpec{Name: "vlan_ids", Type: cty.List(cty.String), Required: false},
 		"cpus":                             &hcldec.AttrSpec{Name: "cpus", Type: cty.Number, Required: false},
 		"generation":                       &hcldec.AttrSpec{Name: "generation", Type: cty.Number, Required: false},
 		"enable_mac_spoofing":              &hcldec.AttrSpec{Name: "enable_mac_spoofing", Type: cty.Bool, Required: false},

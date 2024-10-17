@@ -100,6 +100,9 @@ type CommonConfig struct {
 	// card for the new virtual machine. By default none is set. If none is set
 	// then VLANs are not set on the virtual machine's network card.
 	VlanId string `mapstructure:"vlan_id" required:"false"`
+	// The Vlan ID of the optional virtual network cards set in `switches_names` array. By default none is set. If none is set
+	// then VLANs are not set on the virtual machine's network card.
+	VlanIds []string `mapstructure:"vlan_ids" required:"false"`
 	// The number of CPUs the virtual machine should use. If
 	// this isn't specified, the default is 1 CPU.
 	Cpu uint `mapstructure:"cpus" required:"false"`
